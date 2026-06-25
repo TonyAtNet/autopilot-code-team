@@ -4,7 +4,7 @@
 
 <p align="center">
   <strong>22 个 AI-Native 角色配置，覆盖产品定义到工程实现的完整链路</strong><br>
-  可直接导入 Cursor / Claude Code / Kimi Code / Trae 等 AI IDE 使用
+  可直接导入 Reasonix / OpenCode / Codex / Claude Code / Kimi Code / Trae / Cursor 等 AI IDE 使用
 </p>
 
 <p align="center">
