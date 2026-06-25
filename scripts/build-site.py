@@ -157,7 +157,7 @@ def build_site():
         <div class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-white font-bold text-sm">V</div>
         <div>
           <h1 class="text-lg font-bold text-slate-900">AutoPilot Code Team</h1>
-          <p class="text-xs text-slate-500">面向 AI IDE 的 21 个角色配置库</p>
+          <p class="text-xs text-slate-500">面向 AI IDE 的 22 个角色配置库</p>
         </div>
       </div>
       <div class="flex items-center gap-3">
