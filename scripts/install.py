@@ -319,7 +319,7 @@ def clean_generate(func, roles, output_dir, label):
 
 
 def _mirror_to_zh_cn():
-    """将 root 的中文角色镜像到 zh-CN/ 目录"""
+    """将 root 的中文角色镜像到 zh-CN/ 目录（跳过 README.md）"""
     zh_cn_root = REPO_ROOT / "zh-CN"
     zh_cn_root.mkdir(parents=True, exist_ok=True)
 
