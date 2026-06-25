@@ -299,7 +299,7 @@ Step 8: 调用 vibe-tech-writer
 
 ## 致谢
 
-本项目的角色设计灵感来源于 Vibe Coding 生态的最新实践，包括 Cursor、v0、 Lovable, Claude Code、Kimi Code 等 AI 工具的使用经验，以及 MCP 协议、RICE-V 评分框架等前沿方法论。
+本项目的角色设计灵感来源于 Vibe Coding 生态的最新实践，包括 Reasonix、OpenCode、Kimi Code 等 AI 工具的使用经验，以及 MCP 协议、RICE-V 评分框架等前沿方法论。
 
 特别感谢所有贡献者和使用者的反馈，让这套智能体团队持续进化。
 

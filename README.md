@@ -328,7 +328,7 @@ You are free to use, modify, and distribute, including for commercial purposes. 
 
 ## Acknowledgments
 
-This project's role design is inspired by the latest practices in the Vibe Coding ecosystem, including usage experience with Cursor, v0, Lovable, Claude Code, Kimi Code, and other AI tools, as well as cutting-edge methodologies like the MCP protocol and RICE-V scoring framework.
+This project's role design is inspired by the latest practices in the Vibe Coding ecosystem, including usage experience with Reasonix, OpenCode, Kimi Code, and other AI tools, as well as cutting-edge methodologies like the MCP protocol and RICE-V scoring framework.
 
 Special thanks to all contributors and users for their feedback, which allows this agent team to continuously evolve.
 
