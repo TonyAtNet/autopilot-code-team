@@ -31,7 +31,7 @@
 
 ## Project Introduction
 
-Vibe Coding Agent Team is a set of **AI-Native agent role configurations** for the **Vibe Coding era**, containing **21 professional roles** covering the complete chain from trend research, product definition, prototype validation to development, testing, deployment, and operations.
+Vibe Coding Agent Team is a set of **AI-Native agent role configurations** for the **Vibe Coding era**, containing **22 professional roles** covering the complete chain from trend research, product definition, prototype validation to development, testing, deployment, and operations.
 
 Each role file contains:
 - Complete System Prompt configuration (directly importable into AI IDEs)
@@ -59,7 +59,7 @@ Each role file contains:
 All 22 roles are registered as **Reasonix skills**. You only need to talk to one role — the **project manager**.
 
 1. Open Reasonix with this project
-2. Type: `/vibe-project-manager "我想做一个 AI 笔记助手"`
+2. Type: `/vibe-project-manager "I want to build an AI note-taking assistant"`
 3. The PM handles everything
 
 ---
@@ -80,7 +80,7 @@ This generates configurations for 4 platforms. See the platform-specific guides 
 
 ### 2. Platform-Specific Usage
 
-**Reasonix** (自动识别):
+**Reasonix** (auto-detected):
 - Open Reasonix in this directory
 - Use `/vibe-project-manager "..."` as the entry point
 - All 22 roles available as subagent skills via `.reasonix/skills/`
@@ -90,13 +90,13 @@ This generates configurations for 4 platforms. See the platform-specific guides 
 - Claude Code auto-loads `CLAUDE.md` and discovers subagents in `.claude/agents/`
 - Subagents are invoked automatically based on task context
 - 22 subagents: `vibe-trend-researcher`, `product-manager`, `vibe-frontend-engineer`, etc.
-- Manual command: `claude --agent vibe-project-manager "我想做一个AI笔记助手"`
+- Manual command: `claude --agent vibe-project-manager "I want to build an AI note assistant"`
 
 **Codex CLI** (`AGENTS.md`):
 - Run `codex` in the project directory
 - Codex auto-loads `AGENTS.md` for project context
 - The AGENTS.md contains instructions on how to use each role
-- Use natural language prompts like "请以 vibe-backend-engineer 的身份工作，帮我实现..."
+- Use natural language prompts like "Work as vibe-backend-engineer, help me implement..."
 
 **OpenCode** (`.opencode/commands/`):
 - Run `opencode` in the project directory
@@ -108,7 +108,7 @@ This generates configurations for 4 platforms. See the platform-specific guides 
 **Cursor** (`.cursor/rules/`):
 - Open this project in Cursor
 - Rules in `.cursor/rules/` are auto-loaded
-- Use `@` to mention roles: `@vibe-frontend-engineer 帮我实现这个组件`
+- Use `@` to mention roles: `@vibe-frontend-engineer implement this component`
 - 22 rules available matching each role
 
 ---
@@ -142,20 +142,20 @@ The role will automatically execute: requirement understanding → AI prototype 
 ## Project Structure
 
 ```
-├── autopilot-code-team/               # 项目根目录
+├── autopilot-code-team/               # Project root
 │   ├── LICENSE                         # MIT License
 │   ├── README.md                       # English (this file)
 │   ├── zh-CN/README.md                 # Chinese version
 │
-├── product/                             # Product-side roles (6) — Chinese
+├── product/                             # Product-side roles (6)
 │   ├── product-manager.md
 │   ├── vibe-behavioral-designer.md
 │   ├── vibe-feedback-analyst.md
 │   ├── vibe-priority-orchestrator.md
-│   ├── vibe-project-manager.md           ← Entry point (automated)
+│   ├── vibe-project-manager.md           ← Entry point (via /vibe-project-manager)
 │   └── vibe-trend-researcher.md
 │
-├── engineering/                         # Engineering-side roles (16) — Chinese
+├── engineering/                         # Engineering-side roles (16)
 │   ├── vibe-ai-llm-engineer.md
 │   ├── vibe-architect.md
 │   ├── vibe-backend-engineer.md
@@ -173,30 +173,38 @@ The role will automatically execute: requirement understanding → AI prototype 
 │   ├── vibe-security-engineer.md
 │   └── vibe-tech-writer.md
 │
-├── .reasonix/                           # Reasonix skill registry (auto-generated)
-│   └── skills/
-│       ├── vibe-project-manager/         ← Inline skill (user entry point)
-│       ├── vibe-trend-researcher/        ← Subagent skills (called by PM)
-│       ├── product-manager/
-│       └── ... (22 skills total)
+├── en/                                  # English translations
+│   ├── product/                           # English product roles (6)
+│   └── engineering/                       # English engineering roles (16)
 │
-├── zh-CN/                               # Chinese versions
-│   ├── product/                           # Chinese product roles (5)
+├── zh-CN/                               # Chinese mirror
+│   ├── product/                           # Chinese product roles (6)
 │   └── engineering/                       # Chinese engineering roles (16)
 │
-├── en/                                  # English versions
-│   ├── product/                           # English product roles (5)
-│   └── engineering/                       # English engineering roles (16)
+├── .reasonix/skills/                    # Reasonix skill registry
+├── .claude/agents/                      # Claude Code subagents
+├── .cursor/rules/                       # Cursor rules
+├── .opencode/commands/                  # OpenCode commands
+├── .github/workflows/                   # GitHub Actions CI
+│
+├── scripts/                             # Orchestration and validation
+│   ├── install.py                       # Multi-platform config generator
+│   ├── validate.py                      # Role file validator
+│   ├── build-site.py                    # GitHub Pages builder
+│   ├── relay-parser.py                  # Dependency graph parser
+│   ├── relay-runner.py                  # Parallel dispatch engine
+│   ├── relay-hooks.py                   # Pre/Post validation gates
+│   ├── relay-goal.py                    # Self-check loop tool
+│   ├── relay-lock.py                    # Concurrent state locking
+│   ├── relay-worktree.py                # Git worktree isolation
+│   └── relay-memory.py                  # Auto Memory learning
 │
 ├── examples/                            # Example projects
 │   └── ai-note-assistant/                 # End-to-end example (8 stages)
 │
-├── scripts/                             # Build and validation scripts
-│   ├── validate.py
-│   └── build-site.py
-│
 └── docs/                                # GitHub Pages site
-    └── index.html
+    ├── index.html
+    └── examples/relay-plan-example.json
 ```
 
 **Total: 22 agent roles (Chinese + English bilingual) — all registered as Reasonix skills**
