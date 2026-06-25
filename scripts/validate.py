@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 Vibe Coding Agent Team Contributors
+# Copyright (c) 2026 AutoPilot Code Team Contributors
 # SPDX-License-Identifier: MIT
 """
-Vibe Coding Agent Team 文件验证脚本
+AutoPilot Code Team 文件验证脚本
 
 验证所有 product/ 和 engineering/ 目录下的 .md 文件是否符合开源规范：
 1. YAML Frontmatter 必须包含 name, description, color
@@ -164,7 +164,7 @@ def main() -> int:
     total_files = 0
     
     print("=" * 60)
-    print("Vibe Coding Agent Team 文件验证")
+    print("AutoPilot Code Team 文件验证")
     print("=" * 60)
     print()
     

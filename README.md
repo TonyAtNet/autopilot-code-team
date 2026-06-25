@@ -1,4 +1,4 @@
-# Vibe Coding Agent Team
+# AutoPilot Code Team
 
 <div align="center">
 
@@ -31,7 +31,7 @@
 
 ## Project Introduction
 
-Vibe Coding Agent Team is a set of **AI-Native agent role configurations** for the **Vibe Coding era**, containing **22 professional roles** covering the complete chain from trend research, product definition, prototype validation to development, testing, deployment, and operations.
+AutoPilot Code Team is a set of **AI-Native agent role configurations** for the **Vibe Coding era**, containing **22 professional roles** covering the complete chain from trend research, product definition, prototype validation to development, testing, deployment, and operations.
 
 Each role file contains:
 - Complete System Prompt configuration (directly importable into AI IDEs)

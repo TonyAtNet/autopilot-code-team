@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 Vibe Coding Agent Team Contributors
+# Copyright (c) 2026 AutoPilot Code Team Contributors
 # SPDX-License-Identifier: MIT
 """
-Vibe Coding Agent Team — 全平台安装配置生成器
+AutoPilot Code Team — 全平台安装配置生成器
 
 从 product/*.md 和 engineering/*.md 自动生成各 Agent 工具的配置文件。
 
@@ -219,7 +219,7 @@ globs: **/*
 def generate_entrypoints(roles: list[dict]):
     """生成入口文件 CLAUDE.md 和 OpenCode.md"""
     # CLAUDE.md — Claude Code 入口
-    claude_content = """# Vibe Coding Agent Team
+    claude_content = """# AutoPilot Code Team
 
 See @AGENTS.md for full project instructions and role definitions.
 
@@ -241,7 +241,7 @@ For manual subagent invocation, refer to AGENTS.md.
     print("  [OK] CLAUDE.md")
 
     # OpenCode.md — OpenCode 项目记忆文件
-    opencode_content = """# Vibe Coding Agent Team
+    opencode_content = """# AutoPilot Code Team
 
 This repository contains 22 AI-native agent role configurations for Vibe Coding.
 
@@ -386,7 +386,7 @@ def _generate_english_configs():
 
 def main():
     if len(sys.argv) < 2 or "--help" in sys.argv:
-        print("Vibe Coding Agent Team — 全平台安装配置生成器")
+        print("AutoPilot Code Team — 全平台安装配置生成器")
         print()
         print("用法:")
         print("  python scripts/install.py --all          生成所有平台配置（含中文镜像）")

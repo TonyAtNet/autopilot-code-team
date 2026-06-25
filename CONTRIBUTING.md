@@ -1,6 +1,6 @@
 # 贡献指南
 
-感谢你对 Vibe Coding Agent Team 的兴趣！本指南将帮助你快速参与贡献。
+感谢你对 AutoPilot Code Team 的兴趣！本指南将帮助你快速参与贡献。
 
 ## 目录
 

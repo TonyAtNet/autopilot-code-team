@@ -1,4 +1,4 @@
-# Vibe Coding Agent Team
+# AutoPilot Code Team
 
 22 AI-native role configurations (Markdown) for AI IDEs — Cursor, Claude Code, Kimi Code, Trae, etc. Covers trend research → product definition → prototyping → development → testing → deployment → docs. All roles registered as Reasonix skills for automated invocation.
 

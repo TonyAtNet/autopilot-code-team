@@ -1,4 +1,4 @@
-# Vibe Coding Agent Team
+# AutoPilot Code Team
 
 <div align="center">
 
@@ -31,7 +31,7 @@
 
 ## 项目简介
 
-Vibe Coding Agent Team 是一套面向 **Vibe Coding 时代** 的 AI-Native 智能体角色配置库，共包含 **22 个专业角色**，覆盖从趋势研究、产品定义、原型验证到开发、测试、部署运维的完整链路。
+AutoPilot Code Team 是一套面向 **Vibe Coding 时代** 的 AI-Native 智能体角色配置库，共包含 **22 个专业角色**，覆盖从趋势研究、产品定义、原型验证到开发、测试、部署运维的完整链路。
 
 每个角色文件均包含：
 - 完整的 System Prompt 配置（可直接导入 AI IDE）

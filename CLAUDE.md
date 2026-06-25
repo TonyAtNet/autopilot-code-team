@@ -1,4 +1,4 @@
-# Vibe Coding Agent Team
+# AutoPilot Code Team
 
 See @AGENTS.md for full project instructions and role definitions.
 

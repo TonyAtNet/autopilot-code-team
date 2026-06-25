@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 Vibe Coding Agent Team Contributors
+# Copyright (c) 2026 AutoPilot Code Team Contributors
 # SPDX-License-Identifier: MIT
 """
 构建 GitHub Pages 文档站点
@@ -136,7 +136,7 @@ def build_site():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vibe Coding Agent Team</title>
+<title>AutoPilot Code Team</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   .agent-card {{ transition: all 0.2s ease; }}
@@ -156,7 +156,7 @@ def build_site():
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-white font-bold text-sm">V</div>
         <div>
-          <h1 class="text-lg font-bold text-slate-900">Vibe Coding Agent Team</h1>
+          <h1 class="text-lg font-bold text-slate-900">AutoPilot Code Team</h1>
           <p class="text-xs text-slate-500">面向 AI IDE 的 21 个角色配置库</p>
         </div>
       </div>
@@ -215,7 +215,7 @@ def build_site():
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <div class="flex items-center justify-between flex-wrap gap-3">
       <p class="text-xs text-slate-500">
-        Vibe Coding Agent Team  MIT License
+        AutoPilot Code Team  MIT License
       </p>
       <p class="text-xs text-slate-400">
         用 AI 团队，做 Vibe 产品

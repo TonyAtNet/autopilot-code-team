@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 Vibe Coding Agent Team Contributors
+# Copyright (c) 2026 AutoPilot Code Team Contributors
 # SPDX-License-Identifier: MIT
 """
 Git Worktree 隔离管理

@@ -1,4 +1,4 @@
-# Vibe Coding Agent Team — 视频讲解PPT大纲
+# AutoPilot Code Team — 视频讲解PPT大纲
 
 > 从"有想法却不会编程"的普通人，到"用AI团队做Vibe产品"的实战者
 
@@ -144,7 +144,7 @@
 
 ## 第9页：成品展示（15秒）
 
-**标题**：这就是Vibe Coding Agent Team
+**标题**：这就是AutoPilot Code Team
 
 **展示内容**：
 - 21个角色文件，中英双语，直接导入AI IDE
@@ -186,7 +186,7 @@
 
 ## 第12页：行动号召（5秒）
 
-**标题**：GitHub搜索：Vibe Coding Agent Team
+**标题**：GitHub搜索：AutoPilot Code Team
 
 **要点**：
 - 21个AI-Native角色，中英双语

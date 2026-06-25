@@ -1,4 +1,4 @@
-# Vibe Coding Agent Team
+# AutoPilot Code Team
 
 This repository contains 22 AI-native agent role configurations for Vibe Coding.
 
