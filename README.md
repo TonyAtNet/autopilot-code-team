@@ -37,6 +37,16 @@ AutoPilot Code Team is a set of **AI-Native agent role configurations** for the 
 
 **One conversation, one team.** You don't need to know which of the 22 roles does what. Just talk to the **project manager** (`vibe-project-manager`) — it automatically breaks down your requirements, dispatches tasks to the right subagents, tracks progress across the relay pipeline, and delivers finished results. The team truly works *as a team* behind the scenes. Perfect for beginners and solo developers: describe what you want, and the agents figure out the rest.
 
+**Dependency-driven relay pipeline.** Tasks are modeled as a dependency graph — independent roles run in parallel, dependent ones run sequentially. `relay-runner.py` dispatches batches automatically. When frontend and backend can be built simultaneously, the relay plan makes it happen.
+
+**Self-check goal loops.** Before a role delivers, it runs its own validation checks (`verify.checks`) in a loop: edit → check → fail → fix → recheck. Retries up to N times. PM doesn't re-verify — just confirms the final pass/degraded status.
+
+**Concurrency safety.** Parallel roles get isolated Git worktrees (`relay-worktree.py`), avoiding file conflicts. Feature-level locks (`relay-lock.py`) prevent two agents from claiming the same task.
+
+**Learns over time.** `relay-memory.py` records actual effort vs estimates, common blockers, and quality history across relay sessions. The PM consults past data when planning future projects.
+
+**Zero dependencies.** All scripts use Python 3.11+ standard library only — no `pip install` needed.
+
 ---
 
 Each role file contains:
