@@ -1,0 +1,6 @@
+[permissions]
+allow = ["Edit"]
+
+[project]
+name = "autopilot-code-team"
+description = "22 AI-native agent roles for Vibe Coding workflows"

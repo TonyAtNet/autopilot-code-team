@@ -1,0 +1,99 @@
+{
+  "project": "AI 笔记助手",
+  "version": "1.0.0",
+  "phases": [
+    {
+      "id": "phase-1-research",
+      "name": "趋势研究与验证",
+      "relays": [
+        {
+          "id": "relay-1",
+          "role": "vibe-trend-researcher",
+          "description": "研究 AI 笔记市场趋势",
+          "dependencies": [],
+          "parallel_with": [],
+          "estimated_effort": "1 day",
+          "pre_checks": ["dependency_plan"],
+          "post_checks": ["relay_plan_valid"]
+        },
+        {
+          "id": "relay-2",
+          "role": "vibe-prototyper",
+          "description": "生成可交互原型",
+          "dependencies": ["relay-1"],
+          "parallel_with": [],
+          "estimated_effort": "4 hours",
+          "pre_checks": ["dependency_plan"],
+          "post_checks": ["relay_plan_valid"]
+        }
+      ]
+    },
+    {
+      "id": "phase-2-development",
+      "name": "开发实现",
+      "relays": [
+        {
+          "id": "relay-3",
+          "role": "vibe-frontend-engineer",
+          "description": "实现前端 UI",
+          "dependencies": ["relay-2"],
+          "parallel_with": ["relay-4"],
+          "estimated_effort": "3 days"
+        },
+        {
+          "id": "relay-4",
+          "role": "vibe-backend-engineer",
+          "description": "实现后端 API",
+          "dependencies": ["relay-2"],
+          "parallel_with": ["relay-3"],
+          "estimated_effort": "3 days"
+        },
+        {
+          "id": "relay-5",
+          "role": "vibe-ai-llm-engineer",
+          "description": "实现 AI 集成",
+          "dependencies": ["relay-3", "relay-4"],
+          "parallel_with": [],
+          "estimated_effort": "2 days"
+        }
+      ]
+    },
+    {
+      "id": "phase-3-quality",
+      "name": "质量保障",
+      "relays": [
+        {
+          "id": "relay-6",
+          "role": "vibe-qa-automation-engineer",
+          "description": "自动化测试",
+          "dependencies": ["relay-5"],
+          "parallel_with": ["relay-7"],
+          "estimated_effort": "1 day",
+          "verify": {
+            "type": "self_check",
+            "max_retries": 3,
+            "checks": [
+              {"name": "单元测试通过", "cmd": "python -m pytest --tb=short -q 2>/dev/null && echo PASS || echo FAIL", "pass_on": "contains_PASS"},
+              {"name": "接力计划有效", "cmd": "python scripts/relay-parser.py --validate docs/examples/relay-plan-example.json 2>&1 || echo FAIL", "pass_on": "contains_PASS"}
+            ]
+          }
+        },
+        {
+          "id": "relay-7",
+          "role": "vibe-security-engineer",
+          "description": "安全扫描",
+          "dependencies": ["relay-5"],
+          "parallel_with": ["relay-6"],
+          "estimated_effort": "1 day",
+          "verify": {
+            "type": "self_check",
+            "max_retries": 2,
+            "checks": [
+              {"name": "安全扫描通过", "cmd": "python scripts/validate.py 2>&1 && echo PASS || echo WARN", "pass_on": "contains_PASS"}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

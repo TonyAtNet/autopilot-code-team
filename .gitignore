@@ -1,0 +1,40 @@
+# Relay state (auto-generated)
+.relay-state/
+.relay-memory/
+feature_list.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+*.coverage
+htmlcov/
+
+# Node (future-proofing)
+node_modules/
+
+# Environment files
+.env
+*.env
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Reasonix auto-generated state
+.reasonix/desktop-topic-*.json

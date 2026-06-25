@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Coding Agent Team</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  .agent-card { transition: all 0.2s ease; }
+  .agent-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+  .copy-btn { transition: all 0.2s; }
+  .copy-btn.copied { background-color: #10b981; color: white; border-color: #10b981; }
+  .fade-in { animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+<!-- Header -->
+<header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center justify-between flex-wrap gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-white font-bold text-sm">V</div>
+        <div>
+          <h1 class="text-lg font-bold text-slate-900">Vibe Coding Agent Team</h1>
+          <p class="text-xs text-slate-500">面向 AI IDE 的 21 个角色配置库</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="https://github.com" class="text-xs text-slate-500 hover:text-slate-900 flex items-center gap-1">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+  <!-- Stats -->
+  <div class="flex gap-4 mb-8">
+    <div class="bg-white rounded-xl border border-slate-200 px-4 py-3 flex items-center gap-3">
+      <div class="text-2xl font-bold text-slate-900">22</div>
+      <div class="text-xs text-slate-500">角色</div>
+    </div>
+    <div class="bg-white rounded-xl border border-slate-200 px-4 py-3 flex items-center gap-3">
+      <div class="text-2xl font-bold text-slate-900">2</div>
+      <div class="text-xs text-slate-500">分类</div>
+    </div>
+  </div>
+
+  <!-- Search & Filter -->
+  <div class="bg-white rounded-xl border border-slate-200 p-4 mb-6">
+    <div class="flex flex-col sm:flex-row gap-3">
+      <div class="flex-1 relative">
+        <input type="text" id="search" placeholder="搜索角色、工具或描述..." 
+          class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent">
+        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="filterCategory('all')" id="btn-all" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium bg-slate-900 text-white">全部</button>
+        <button onclick="filterCategory('product')" id="btn-product" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">产品</button>
+        <button onclick="filterCategory('engineering')" id="btn-engineering" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">工程</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agent Grid -->
+  <div id="agent-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+  <!-- No results -->
+  <div id="no-results" class="hidden text-center py-16">
+    <div class="text-slate-400 text-sm">没有找到匹配的角色</div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-slate-200 bg-white mt-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="flex items-center justify-between flex-wrap gap-3">
+      <p class="text-xs text-slate-500">
+        Vibe Coding Agent Team  MIT License
+      </p>
+      <p class="text-xs text-slate-400">
+        用 AI 团队，做 Vibe 产品
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const agents = [
+  {
+    "name": "product-manager",
+    "description": "专为 Vibe Coding 与 AI-Native 产品流程构建的智能体。核心职责是设计验证循环、输出可执行产品定义 Spec、编排 AI 工具链完成快速原型与信号收集。从假设到可运行骨架的周期以小时和天计，不以周和月计。掌握现代工具链与 Agent-Native 产品思维，在传统 SaaS 指标之外同步管理 LLM 质量、延迟、成本与安全。",
+    "summary": "本智能体专为 AI-Native 与 Vibe Coding 产品设计流程构建。它不输出仅供人类阅读的静态文档，而是输出能被 AI 工具链直接执行的验证计划与产品 Spec。它连接研究工具、生成式原型平台、AI IDE 和 LLM 可观测系统，确保产品定义从 Day 1 就具备可验证性、可执行性和可度量性。",
+    "category": "product",
+    "color": "bg-blue-50 border-blue-200 text-blue-700",
+    "filename": "product-manager.md",
+    "path": "product/product-manager.md",
+    "tools": [
+      "研究",
+      "原型",
+      "v0，Lovable，Bolt，Replit Agent",
+      "开发验证",
+      "Cursor",
+      "Windsurf",
+      "Claude Code",
+      "Kimi Code"
+    ],
+    "cmd": "/product-manager"
+  },
+  {
+    "name": "vibe-behavioral-designer",
+    "description": "AI-Native 产品体验设计师，专注于 Agent 引导体验、提示词工程优化、MCP 工具调用体验设计与多 Agent 协作边界体验。掌握v0, Lovable, Cursor, Framer，opencode，Qoder，Trae等生成式工具链，为 Vibe Coding 产品打造流畅的 AI 交互范式。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责设计 Agent 与用户的交互体验、优化提示词系统、规划 MCP 工具调用的用户感知路径，以及定义多 Agent 协作时的人机边界。它不输出静态文档，而是输出可直接被 AI IDE 执行的体验 Spec 和提示词模板。",
+    "category": "product",
+    "color": "bg-slate-50 border-slate-200 text-slate-700",
+    "filename": "vibe-behavioral-designer.md",
+    "path": "product/vibe-behavioral-designer.md",
+    "tools": [
+      "原型验证",
+      "交互实现",
+      "观测与反馈",
+      "PostHog",
+      "Amplitude",
+      "Langfuse",
+      "研究"
+    ],
+    "cmd": "/vibe-behavioral-designer"
+  },
+  {
+    "name": "vibe-feedback-analyst",
+    "description": "AI-Native 反馈分析师，使用opencode，Qoder，Trae，LLM 驱动的语义聚类、Perplexity/Deep Research 自动竞品扫描和 AI 生成洞察，将碎片化的用户声音转化为可执行的产品改进建议。掌握 Perplexity, Deep Research, PostHog, Amplitude等现代工具链。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责将多渠道用户反馈聚合、用 LLM 进行语义聚类和根因分析，并输出可直接驱动产品决策的洞察报告。它不依赖人工逐条阅读，而是构建自动化的反馈分析流水线，让信号在 24 小时内从噪音中浮现。",
+    "category": "product",
+    "color": "bg-slate-50 border-slate-200 text-slate-700",
+    "filename": "vibe-feedback-analyst.md",
+    "path": "product/vibe-feedback-analyst.md",
+    "tools": [
+      "研究",
+      "分析",
+      "数据处理",
+      "原型验证"
+    ],
+    "cmd": "/vibe-feedback-analyst"
+  },
+  {
+    "name": "vibe-priority-orchestrator",
+    "description": "AI-Native 优先级调度器，用 RICE-V 框架（加入 Vibe Speed 和模型依赖风险评估）替代传统拍脑袋排序，确保团队永远在做最有价值的事。掌握Perplexity, Deep Research, Cursor, v0，opencode，Qoder，Trae等工具链，驱动数据化的动态优先级决策。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责在无尽的需求池中用数据和 AI 工具找到最优解。核心产出不是静态的优先级列表，而是动态更新的、可执行的优先级调度系统。",
+    "category": "product",
+    "color": "bg-indigo-50 border-indigo-200 text-indigo-700",
+    "filename": "vibe-priority-orchestrator.md",
+    "path": "product/vibe-priority-orchestrator.md",
+    "tools": [
+      "研究",
+      "验证",
+      "分析",
+      "数据",
+      "向量数据库",
+      "RAG pipeline"
+    ],
+    "cmd": "/vibe-priority-orchestrator"
+  },
+  {
+    "name": "vibe-project-manager",
+    "description": "专为 Vibe Coding 与 AI-Native 产品流程构建的项目经理智能体。核心职责是作为用户的唯一沟通入口，拆解需求为可执行的角色接力计划，分配任务给团队内各角色，跟踪交付进度并执行最终验收。用户只需描述需求和反馈，无需直接与其他角色对话。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，是 **Vibe Coding Agent Team 的总调度入口**。它不直接写代码、做设计或写文档，而是理解用户需求，调用团队中的其他角色来完成工作。用户只需要和项目经理沟通，项目经理负责拆解、分配、跟踪和验收。",
+    "category": "product",
+    "color": "bg-indigo-50 border-indigo-200 text-indigo-700",
+    "filename": "vibe-project-manager.md",
+    "path": "product/vibe-project-manager.md",
+    "tools": [
+      "任务管理",
+      "Notion",
+      "Linear",
+      "GitHub Projects",
+      "ClickUp",
+      "Jira",
+      "文档协同",
+      "Notion"
+    ],
+    "cmd": "/vibe-project-manager"
+  },
+  {
+    "name": "vibe-trend-researcher",
+    "description": "AI-Native 趋势研究员，使用Perplexity, Deep Research, Kimi Research, Firecrawl, WebSearch，opencode，Qoder，Trae等工具链驱动研究，输出可执行趋势 Spec（直接喂给 AI IDE），追踪 MCP 生态、AI 工具链和 Agent 范式的演进。帮团队在趋势变成共识之前做好准备。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责在信息洪流中过滤噪音、抓住信号。不预测未来，而是追踪趋势的演变轨迹，输出可直接被 AI IDE 执行的趋势 Spec 和预研计划。",
+    "category": "product",
+    "color": "bg-teal-50 border-teal-200 text-teal-700",
+    "filename": "vibe-trend-researcher.md",
+    "path": "product/vibe-trend-researcher.md",
+    "tools": [
+      "研究",
+      "分析",
+      "原型",
+      "数据",
+      "向量数据库",
+      "RAG pipeline"
+    ],
+    "cmd": "/vibe-trend-researcher"
+  },
+  {
+    "name": "vibe-ai-llm-engineer",
+    "description": "AI-Native LLM 工程师，负责模型选型、提示词工程、RAG 系统构建、Agent 架构设计和模型微调。掌握opencode，Qoder，Trae，OpenAI SDK, Anthropic SDK, Vercel AI SDK, LangChain, LlamaIndex, DSPy, Ollama等现代 AI 工具链。核心产出是可执行的模型策略和 Agent 系统。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责构建 AI 系统的核心大脑：模型选型、提示词工程、RAG 架构、Agent 设计和模型优化。核心产出不是研究论文，而是可直接部署的模型策略、System Prompt 和 Agent 配置。",
+    "category": "engineering",
+    "color": "bg-purple-50 border-purple-200 text-purple-700",
+    "filename": "vibe-ai-llm-engineer.md",
+    "path": "engineering/vibe-ai-llm-engineer.md",
+    "tools": [
+      "模型",
+      "OpenAI GPT-4o/4o-mini",
+      "Anthropic Claude 3.5/3.7",
+      "Google Gemini",
+      "Meta Llama 3",
+      "Mistral",
+      "SDK",
+      "OpenAI SDK"
+    ],
+    "cmd": "/vibe-ai-llm-engineer"
+  },
+  {
+    "name": "vibe-architect",
+    "description": "AI-Native 系统架构师，定义 Agent 可执行的技术 Spec（直接喂给 AI IDE），管理 MCP 生态集成，评估模型依赖风险，确保架构决策在 Vibe Coding 循环中可验证、可量化。掌握Cursor, Claude Code, v0, Lovable, MCP, Trae 2.0, Roo Code，opencode，Qoder等工具链。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责定义系统架构、技术栈选择和 AI 工具链集成方案。核心产出不是静态架构图，而是可被 AI IDE 直接执行的架构 Spec，包含 MCP 服务器定义、模型能力边界评估和基础设施即代码配置。",
+    "category": "engineering",
+    "color": "bg-blue-50 border-blue-200 text-blue-700",
+    "filename": "vibe-architect.md",
+    "path": "engineering/vibe-architect.md",
+    "tools": [
+      "架构实现",
+      "原型验证",
+      "基础设施",
+      "Terraform",
+      "Pulumi",
+      "Kubernetes",
+      "AI 集成",
+      "MCP SDK"
+    ],
+    "cmd": "/vibe-architect"
+  },
+  {
+    "name": "vibe-backend-engineer",
+    "description": "AI-Native 后端工程师，使用Cursor, Claude Code, Trae 2.0, Roo Code，opencode，Qoder等 AI IDE 极速构建 API、数据库和基础设施。掌握opencode，Qoder，Trae，Next.js API Routes, FastAPI, Node.js, Python, Supabase, Turso, Upstash, Redis等现代数据栈，以及 MCP 服务器开发。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责使用 AI 工具链极速构建后端服务、API 和数据库层。核心产出不是手写 SQL 和 API 文档，而是 AI 生成的可执行代码：数据库 schema、API 路由、MCP 服务器和缓存策略。",
+    "category": "engineering",
+    "color": "bg-green-50 border-green-200 text-green-700",
+    "filename": "vibe-backend-engineer.md",
+    "path": "engineering/vibe-backend-engineer.md",
+    "tools": [
+      "AI IDE",
+      "框架",
+      "Next.js API Routes",
+      "FastAPI",
+      "Node.js",
+      "Python",
+      "数据库",
+      "Supabase/PostgreSQL"
+    ],
+    "cmd": "/vibe-backend-engineer"
+  },
+  {
+    "name": "vibe-code-reviewer",
+    "description": "AI-Native 代码审查员，使用AI 工具链进行自动化代码审查、安全扫描、性能分析和风格检查。掌握 Cursor Review, Claude Code Review, GitHub Copilot Review, CodeRabbit, Snyk, SonarQube，opencode，Qoder，Trae等现代工具链。核心产出是自动化审查报告 + 人工重点审查清单。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责用 AI 工具链进行自动化代码审查，让人工审查员专注于架构设计、业务逻辑和安全边界。核心产出不是逐行评论，而是分类的审查报告：AI 自动修复项、人工必须审查项、建议优化项。",
+    "category": "engineering",
+    "color": "bg-orange-50 border-orange-200 text-orange-700",
+    "filename": "vibe-code-reviewer.md",
+    "path": "engineering/vibe-code-reviewer.md",
+    "tools": [
+      "AI 审查",
+      "Cursor Review",
+      "Claude Code Review",
+      "GitHub Copilot Review",
+      "CodeRabbit",
+      "PR-Agent",
+      "静态分析",
+      "SonarQube"
+    ],
+    "cmd": "/vibe-code-reviewer"
+  },
+  {
+    "name": "vibe-data-engineer",
+    "description": "AI-Native 数据工程师，负责数据管道、ETL、数据仓库、实时流处理和 AI 训练数据准备。掌握opencode，Qoder，Trae，dbt, Fivetran, Airbyte, Snowflake, BigQuery, DuckDB, Kafka, Spark等现代数据栈，以及 AI 数据标注和评估集构建。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责构建数据管道、数据仓库和 AI 训练数据基础设施。核心产出不是手动编写的 SQL 脚本，而是 AI 生成的数据管道配置、自动化 ETL 和可观测的数据质量监控。",
+    "category": "engineering",
+    "color": "bg-yellow-50 border-yellow-200 text-yellow-700",
+    "filename": "vibe-data-engineer.md",
+    "path": "engineering/vibe-data-engineer.md",
+    "tools": [
+      "ETL",
+      "dbt",
+      "Fivetran",
+      "Airbyte",
+      "Meltano",
+      "Dagster",
+      "数据仓库",
+      "Snowflake"
+    ],
+    "cmd": "/vibe-data-engineer"
+  },
+  {
+    "name": "vibe-database-engineer",
+    "description": "AI-Native 数据库工程师，负责数据库设计、Schema 管理、查询优化、数据迁移和向量数据库管理。掌握opencode，Qoder，Trae，PostgreSQL, MySQL, Supabase, Neon, Turso, PlanetScale, Pinecone, Qdrant, Weaviate, Chroma等现代数据栈。核心产出是 AI 生成但经人工审查的 Schema、迁移脚本和查询优化方案。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责设计和管理 AI 系统的数据层。核心产出不是手写 SQL，而是 AI 生成的数据库 Schema、迁移脚本和查询优化方案，经人工审查后执行。",
+    "category": "engineering",
+    "color": "bg-slate-50 border-slate-200 text-slate-700",
+    "filename": "vibe-database-engineer.md",
+    "path": "engineering/vibe-database-engineer.md",
+    "tools": [
+      "关系数据库",
+      "PostgreSQL",
+      "MySQL",
+      "Supabase",
+      "Neon",
+      "Turso",
+      "PlanetScale",
+      "CockroachDB"
+    ],
+    "cmd": "/vibe-database-engineer"
+  },
+  {
+    "name": "vibe-devops-engineer",
+    "description": "AI-Native DevOps 与 SRE 工程师，负责基础设施即代码、CI/CD 流水线、自动化部署、可观测性体系和故障响应。掌握opencode，Qoder，Trae，Terraform, Pulumi, GitHub Actions, Kubernetes, Datadog, PagerDuty, Langfuse等现代工具链。核心产出是可自动执行的基础设施配置和故障响应 Runbook。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责构建和维护 AI-Native 系统的基础设施、部署流水线和可观测性体系。核心产出不是手动操作的运维手册，而是可被 AI IDE 执行的基础设施即代码、自动化流水线和故障响应自动化。",
+    "category": "engineering",
+    "color": "bg-slate-50 border-slate-200 text-slate-700",
+    "filename": "vibe-devops-engineer.md",
+    "path": "engineering/vibe-devops-engineer.md",
+    "tools": [
+      "IaC",
+      "Terraform",
+      "Pulumi",
+      "AWS CDK",
+      "CloudFormation",
+      "CI/CD",
+      "GitHub Actions",
+      "GitLab CI"
+    ],
+    "cmd": "/vibe-devops-engineer"
+  },
+  {
+    "name": "vibe-frontend-engineer",
+    "description": "AI-Native 前端工程师，使用Cursor, Claude Code, v0, Lovable, Bolt, Tempo，opencode，Qoder，Trae等 AI 工具链进行极速开发。不手写重复代码，而是编排 AI 生成、审查和优化。掌握 React/Next.js, Tailwind, TypeScript 全栈，以及 AI SDK 集成（Vercel AI SDK, LangChain JS）。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责使用 AI 工具链极速构建高质量前端界面。核心产出不是手写代码，而是与 AI 协作的代码：AI 生成骨架，人类审查逻辑，AI 优化细节。",
+    "category": "engineering",
+    "color": "bg-cyan-50 border-cyan-200 text-cyan-700",
+    "filename": "vibe-frontend-engineer.md",
+    "path": "engineering/vibe-frontend-engineer.md",
+    "tools": [
+      "AI 生成",
+      "框架",
+      "Next.js",
+      "React",
+      "Vue",
+      "Svelte",
+      "Tailwind CSS",
+      "TypeScript"
+    ],
+    "cmd": "/vibe-frontend-engineer"
+  },
+  {
+    "name": "vibe-git-master",
+    "description": "AI-Native Git 版本控制大师，负责分支策略、代码合并、冲突解决、发布管理和版本控制最佳实践。掌握Git, GitHub, GitLab, Cursor, Claude Code，opencode，Qoder，Trae等 AI 辅助的代码管理工具链。核心产出是自动化的 Git 工作流、标准化的提交规范和零冲突的合并策略。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责设计和管理团队的 Git 工作流、代码合并策略和版本控制规范。核心产出不是\"Git 使用手册\"，而是可自动执行的 Git 工作流配置、提交规范检查和合并自动化。",
+    "category": "engineering",
+    "color": "bg-slate-50 border-slate-200 text-slate-700",
+    "filename": "vibe-git-master.md",
+    "path": "engineering/vibe-git-master.md",
+    "tools": [
+      "版本控制",
+      "Git，GitHub，GitLab，Bitbucket",
+      "AI 辅助",
+      "Cursor",
+      "Claude Code",
+      "GitHub Copilot",
+      "GitHub CLI",
+      "自动化"
+    ],
+    "cmd": "/vibe-git-master"
+  },
+  {
+    "name": "vibe-minimal-change-engineer",
+    "description": "AI-Native 最小变更工程师（精细化改动专家），专注于精准、小范围、高影响的代码改动。掌握Cursor, Claude Code, Kimi Code，opencode，Qoder，Trae等 AI IDE 的精细化编辑能力，擅长用 AI 工具进行 diff 级别的精准修改，而非全量重写。核心产出是零回滚风险的最小变更集。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责在现有代码库中进行精准、小范围、高影响的代码改动。核心产出不是\"重写整个模块\"，而是\"只改需要改的地方，且确保零回滚风险\"。",
+    "category": "engineering",
+    "color": "bg-slate-50 border-slate-200 text-slate-700",
+    "filename": "vibe-minimal-change-engineer.md",
+    "path": "engineering/vibe-minimal-change-engineer.md",
+    "tools": [
+      "AI 精细化编辑",
+      "Cursor",
+      "Claude Code",
+      "Kimi Code",
+      "Aider",
+      "Continue",
+      "Diff 管理",
+      "Git diff"
+    ],
+    "cmd": "/vibe-minimal-change-engineer"
+  },
+  {
+    "name": "vibe-mobile-engineer",
+    "description": "AI-Native 移动端工程师，使用Cursor, Claude Code, Expo, React Native, SwiftUI，opencode，Qoder，Trae等 AI 工具链进行跨平台极速开发。掌握 AI SDK 移动端集成、离线缓存、推送通知和原生模块开发。核心产出是 AI 生成的可运行移动端代码，经人工审查后交付。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责使用 AI 工具链极速构建移动端应用。核心产出不是手写原生代码，而是 AI 生成的跨平台代码：React Native / Expo 骨架，经人工审查后优化原生体验。",
+    "category": "engineering",
+    "color": "bg-slate-50 border-slate-200 text-slate-700",
+    "filename": "vibe-mobile-engineer.md",
+    "path": "engineering/vibe-mobile-engineer.md",
+    "tools": [
+      "AI IDE",
+      "跨平台",
+      "Expo",
+      "React Native",
+      "Flutter",
+      "Kotlin Multiplatform",
+      "原生",
+      "SwiftUI"
+    ],
+    "cmd": "/vibe-mobile-engineer"
+  },
+  {
+    "name": "vibe-onboarding-engineer",
+    "description": "AI-Native 新人入职工程师，负责设计自动化的新人培训流程、环境搭建、代码库熟悉和团队融入。掌握Cursor, Claude Code, Notion, GitHub, Docker, Dev Containers，opencode，Qoder，Trae等现代工具链。核心产出是可自动执行的新人入职清单和 AI 辅助的培训材料，让新人在 1 天内完成环境搭建并提交第一个 PR。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责设计自动化、标准化的新人入职流程。核心产出不是\"入职手册\"，而是可自动执行的入职清单、AI 辅助的培训材料和一键搭建的开发环境，让新人在 1 天内完成环境搭建并提交第一个 PR。",
+    "category": "engineering",
+    "color": "bg-slate-50 border-slate-200 text-slate-700",
+    "filename": "vibe-onboarding-engineer.md",
+    "path": "engineering/vibe-onboarding-engineer.md",
+    "tools": [
+      "环境",
+      "文档",
+      "Notion",
+      "GitHub Wiki",
+      "GitBook",
+      "Docusaurus",
+      "AI 辅助",
+      "Cursor"
+    ],
+    "cmd": "/vibe-onboarding-engineer"
+  },
+  {
+    "name": "vibe-prototyper",
+    "description": "AI-Native 原型工程师，使用v0, Lovable, Bolt, Framer, Tempo, Cursor，opencode，Qoder，Trae等生成式工具链在 Hours 级别内构建可交互原型。核心产出不是设计稿，而是可点击、可测试、可验证的功能原型，直接用于用户测试和信号收集。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责在 Hours 级别内将需求转化为可交互原型。核心产出不是静态设计稿，而是可点击、可测试、可验证的功能原型，用于快速验证假设和收集用户信号。",
+    "category": "engineering",
+    "color": "bg-pink-50 border-pink-200 text-pink-700",
+    "filename": "vibe-prototyper.md",
+    "path": "engineering/vibe-prototyper.md",
+    "tools": [
+      "生成式原型",
+      "v0",
+      "Lovable",
+      "Bolt",
+      "Tempo",
+      "Framer",
+      "Uizard",
+      "代码原型"
+    ],
+    "cmd": "/vibe-prototyper"
+  },
+  {
+    "name": "vibe-qa-automation-engineer",
+    "description": "AI-Native 质量保障自动化工程师，负责构建 AI 驱动的测试自动化体系、智能测试生成、视觉回归测试和性能基准测试。掌握opencode，Qoder，Trae，Playwright, Vitest, Cypress, Chromatic, Applitools, K6, Artillery等现代测试工具链，以及 AI 辅助的测试用例生成和 Bug 预测。核心产出是可自动执行的测试套件和智能质量门禁。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责构建 AI 驱动的测试自动化体系。核心产出不是手动编写的测试用例，而是 AI 辅助生成、自动执行、持续监控的智能测试套件，确保代码质量在 AI 加速开发的环境中不下降。",
+    "category": "engineering",
+    "color": "bg-slate-50 border-slate-200 text-slate-700",
+    "filename": "vibe-qa-automation-engineer.md",
+    "path": "engineering/vibe-qa-automation-engineer.md",
+    "tools": [
+      "E2E 测试",
+      "Playwright",
+      "Cypress",
+      "Selenium",
+      "WebdriverIO",
+      "单元测试",
+      "Vitest",
+      "Jest"
+    ],
+    "cmd": "/vibe-qa-automation-engineer"
+  },
+  {
+    "name": "vibe-security-engineer",
+    "description": "AI-Native 安全工程师，负责构建 AI 系统的安全防线：提示注入防护、数据隐私合规、模型输出安全、多 Agent 通信安全。将安全视为产品特性而非审计清单，掌握opencode，Qoder，Trae，LangChain Guardrails、AI 安全测试框架、零信任架构等现代工具链。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责从架构到代码的全链路安全。核心产出不是安全审计报告，而是可被 AI IDE 直接执行的安全策略、Guardrails 配置和自动化测试套件。",
+    "category": "engineering",
+    "color": "bg-red-50 border-red-200 text-red-700",
+    "filename": "vibe-security-engineer.md",
+    "path": "engineering/vibe-security-engineer.md",
+    "tools": [
+      "安全框架",
+      "LangChain Guardrails",
+      "Prompt Armor",
+      "Lakera Guard",
+      "HiddenLayer",
+      "测试",
+      "AI 红队测试 (Red Teaming)",
+      "模糊测试 (Fuzzing)"
+    ],
+    "cmd": "/vibe-security-engineer"
+  },
+  {
+    "name": "vibe-tech-writer",
+    "description": "AI-Native 技术文档工程师，负责 API 文档、开发者指南、AI 系统文档和内部知识库。掌握Mintlify, ReadMe, Docusaurus, GitBook, Notion, Cursor, Claude Code，opencode，Qoder，Trae等现代文档工具链。核心产出是 AI 辅助生成但经人工审查的高质量技术文档，确保文档与代码同步更新。",
+    "summary": "本智能体专为 Vibe Coding 与 AI-Native 产品流程构建，负责创建和维护技术文档、API 文档、开发者指南和内部知识库。核心产出不是\"写完后就不再更新\"的静态文档，而是与代码同步更新、AI 辅助生成、人工审查把关的活文档。",
+    "category": "engineering",
+    "color": "bg-slate-50 border-slate-200 text-slate-700",
+    "filename": "vibe-tech-writer.md",
+    "path": "engineering/vibe-tech-writer.md",
+    "tools": [
+      "文档平台",
+      "AI 生成",
+      "API 文档",
+      "OpenAPI",
+      "Swagger",
+      "Postman",
+      "Stoplight",
+      "Redoc"
+    ],
+    "cmd": "/vibe-tech-writer"
+  }
+];
+let currentCategory = 'all';
+let currentSearch = '';
+
+function render() {
+  const grid = document.getElementById('agent-grid');
+  const noResults = document.getElementById('no-results');
+  
+  const filtered = agents.filter(a => {
+    const matchCat = currentCategory === 'all' || a.category === currentCategory;
+    const s = currentSearch.toLowerCase();
+    const matchSearch = !s || 
+      a.name.toLowerCase().includes(s) || 
+      a.description.toLowerCase().includes(s) ||
+      a.summary.toLowerCase().includes(s) ||
+      a.tools.some(t => t.toLowerCase().includes(s));
+    return matchCat && matchSearch;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    noResults.classList.remove('hidden');
+    return;
+  }
+  noResults.classList.add('hidden');
+
+  grid.innerHTML = filtered.map(a => {
+    const toolsTags = a.tools.slice(0, 5).map(t => 
+      `<span class="text-[10px] px-2 py-0.5 rounded bg-white/80 border border-slate-200 text-slate-600">${t}</span>`
+    ).join('');
+    
+    const cmdTag = a.name === 'vibe-project-manager'
+      ? `<span class="text-[11px] font-mono bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">/vibe-project-manager "我想做..."</span>`
+      : `<span class="text-[11px] font-mono bg-slate-100 text-slate-500 px-2 py-0.5 rounded">${a.cmd} &lt;task&gt;</span>`;
+    
+    return `
+      <div class="agent-card bg-white rounded-xl border border-slate-200 p-5 fade-in">
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full ${a.color.split(' ')[0].replace('bg-', '').replace('50', '500')}"></span>
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">${a.category}</span>
+            ${a.name === 'vibe-project-manager' ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-600 font-medium">入口</span>' : ''}
+          </div>
+          <button onclick="copyAgent('${a.path}')" class="copy-btn text-xs px-3 py-1 rounded border border-slate-200 text-slate-600 hover:bg-slate-50" id="btn-${a.path}">
+            复制
+          </button>
+        </div>
+        <h3 class="text-base font-bold text-slate-900 mb-1">${a.name}</h3>
+        <p class="text-xs text-slate-500 mb-2 leading-relaxed">${a.description}</p>
+        <div class="mb-3">${cmdTag}</div>
+        <p class="text-xs text-slate-600 mb-4 leading-relaxed line-clamp-2">${a.summary}</p>
+        <div class="flex flex-wrap gap-1.5">${toolsTags}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function copyAgent(path) {
+  try {
+    const res = await fetch(path);
+    const text = await res.text();
+    await navigator.clipboard.writeText(text);
+    const btn = document.getElementById('btn-' + path);
+    const original = btn.textContent;
+    btn.textContent = '已复制';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.classList.remove('copied');
+    }, 2000);
+  } catch (e) {
+    alert('复制失败，请手动访问：' + path);
+  }
+}
+
+function filterCategory(cat) {
+  currentCategory = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.remove('bg-slate-900', 'text-white');
+    b.classList.add('bg-white', 'text-slate-600');
+  });
+  const active = document.getElementById('btn-' + cat);
+  active.classList.remove('bg-white', 'text-slate-600');
+  active.classList.add('bg-slate-900', 'text-white');
+  render();
+}
+
+document.getElementById('search').addEventListener('input', (e) => {
+  currentSearch = e.target.value;
+  render();
+});
+
+render();
+</script>
+
+</body>
+</html>
